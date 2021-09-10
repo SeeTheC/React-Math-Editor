@@ -1,0 +1,192 @@
+/*
+Copied from persus project
+*/
+.math-input-buttons.absolute {
+    left: -2px;
+    position: absolute;
+    top: -3px;
+    z-index: 101;
+  }
+  .tex-button {
+    display: block;
+    float: left;
+    width: 35px;
+    height: 35px;
+    margin: 2px;
+    border: 1px solid #1c758a;
+    background-color: white;
+    border-radius: 5px;
+  }
+  .tex-button:hover {
+    cursor: pointer;
+    background-color: #f0f0f0;
+  }
+  .tex-button:focus {
+    border: 2px solid #1c758a;
+  outline: none;
+  }
+  .tex-button-row {
+  margin: 5px 0;
+  }
+  .tex-button-row:first-child {
+  margin-top: 0;
+  }
+  .tex-button-row:last-child {
+  margin-bottom: 0;
+  }
+  /*
+  end of styles copied form perseus
+  */
+  
+  .extra-long-problem-action-button {
+    width: 180px
+  }
+  
+  .long-problem-action-button {
+    width: 125px
+  }
+  
+  .short-problem-action-button {
+    width: 55px
+  }
+  
+  .equation-list {
+    float:left;
+    min-width:50%;
+    max-width:77%
+  }
+  
+  .wide-tex-button {
+    width:100px
+  }
+  
+  .text-step-input {
+    width:800px;
+  }
+  
+  .big-mobile-button {
+    height:auto;
+    float:left;
+    border-radius:60px;
+    margin:5px 5px 10px 5px;
+    padding:10px;
+    text-align:center
+  }
+  
+  @media (max-width: 1250px) {
+    .menubar-spacer {
+        height: 60px;
+        display: block
+    }
+    .menubar-spacer-small {
+        height: 60px;
+        display: block
+    }
+  }
+  
+  /* This happens earlier than the phone transition for ipads */
+  @media (max-width: 940px) {
+     div.problem-editor-buttons {
+         width: 100%;
+     }
+  }
+  
+  @media (min-width: 941px) {
+    div.problem-editor-buttons {
+        width: 180px;
+     }
+  }
+  
+  
+  @media (max-width: 640px) {
+  
+    .homepage-headline {
+        font-size: 40px;
+        padding-bottom: 0px;
+    }
+  
+    .big-mobile-button {
+        font-size: 25px;
+        width: 320px;
+    }
+    .freemath-logo{
+        margin-top: 8px
+    }
+    .navBarElms {
+        font-size:25px
+    }
+    /* for display on moblie when items flow to next line, given them
+     * some margin */
+    .navBarItem {
+        margin-top: 5px
+    }
+  
+    .text-step-input {
+        width:500px;
+    }
+    .homepage-actions-container {
+        width:85%;
+    }
+  
+    .equation-list {
+        max-width:95%
+    }
+  
+    .mathStepEditor {
+        max-width:400px
+    }
+    .math-input-buttons {
+        background-color: rgba(245, 245, 245, 0.9);
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        margin-top: 5px;
+        padding: 10px;
+    }
+    .math-input-buttons.absolute {
+      left: -150px;
+      right: -200px;
+      position: absolute;
+      top: -3px;
+      z-index: 101;
+    }
+  
+    .menubar-spacer {
+        height: 140px;
+        display: block
+    }
+    .menubar-spacer-small {
+        height: 120px;
+        display: block
+    }
+  }
+  
+  @media (min-width: 641px) {
+  
+    .big-mobile-button {
+        font-size: 20px;
+        width: 270px
+    }
+  
+    .mathStepEditor {
+        max-width:800px;
+        min-width:750px
+    }
+    .math-input-buttons {
+        background-color: rgba(245, 245, 245, 0.9);
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        margin-top: 5px;
+        padding: 10px;
+        width: 701px;
+    }
+    .freemath-logo{
+        margin-top: 5px
+    }
+    .freemath-logo-text {
+        font-size: 22px;
+        margin: 0;
+    }
+  }
+  

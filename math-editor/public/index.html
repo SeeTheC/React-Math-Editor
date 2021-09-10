@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Math-Editor-Start-->
+
+<!--
+      This file is part of Free Math
+
+      Free Math is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
+
+      Free Math is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+
+      You should have received a copy of the GNU General Public License
+      along with Free Math.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<!--
+      This project includes code from the Persus project from Khan Academy. These
+      portions of the code are licensed under the MIT license.
+
+      The MIT License (MIT)
+
+      Copyright (c) 2014 Khan Academy
+
+      Permission is hereby granted, free of charge, to any person obtaining a copy
+      of this software and associated documentation files (the "Software"), to deal
+      in the Software without restriction, including without limitation the rights
+      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+      copies of the Software, and to permit persons to whom the Software is
+      furnished to do so, subject to the following conditions:
+
+      The above copyright notice and this permission notice shall be included in all
+      copies or substantial portions of the Software.
+
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+      SOFTWARE.
+
+-->
+
+    <script src="lib/jquery/jquery-3.6.0.min.js"></script>    
+    <link rel="stylesheet" href="lib/mathquill-0.10.1/mathquill_2199664.css"/>
+    <script src="lib/mathquill-0.10.1/mathquill_2199664.min.js"></script>
+    
+    <!-- Katex -->    
+    <!-- Needed for static math rendering borrowed from Kahn Perseus project -->
+    <script type="text/javascript" src="lib/katex/katexA11.js"></script>
+    <link rel="stylesheet" href="lib/katex/katex.min.css" >
+    <script src="lib/katex/katex.min.js"></script>
+
+    <script>
+      window.MathQuill = MathQuill.getInterface(2);
+    </script>
+
+   <!-- Math-Editor-End-->
+    
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
