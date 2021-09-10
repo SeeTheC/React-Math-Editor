@@ -20,8 +20,7 @@ window.onload = function() {
   alert("math-editor");
   console.log(rootReducer);
   window.store = createStore(rootReducer);
-  window.ephemeralStore = createStore(ephemeralStateReducer);
-  window.ephemeralStore.subscribe(render);
+  window.ephemeralStore = window.store;
   window.store.subscribe(render);
   window.store.subscribe(autoSave);
 
