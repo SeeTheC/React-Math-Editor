@@ -11,8 +11,6 @@ var PROBLEMS = 'PROBLEMS';
 var ADD_PROBLEM = 'ADD_PROBLEM';
 
 var BUTTON_GROUP = 'BUTTON_GROUP';
-var STEPS = 'STEPS';
-var SET_CURRENT_PROBLEM = 'SET_CURRENT_PROBLEM';
 var CURRENT_PROBLEM = 'CURRENT_PROBLEM';
 var REMOVE_PROBLEM = 'REMOVE_PROBLEM';
 
@@ -59,22 +57,17 @@ class Assignment extends React.Component {
             currProblem = probs.length - 1;
             this.props.value[CURRENT_PROBLEM] = currProblem;
         }
-
-
-        var addProblem = function() {
-            var probs = this.props.value[PROBLEMS];
-            var lastProb = probs[probs.length - 1];
-            // window.ga('send', 'event', 'Actions', 'edit',
-            //     'Add Problem - last problem steps = ', lastProb[STEPS].length);
-            window.store.dispatch({ type : ADD_PROBLEM});
-            window.ephemeralStore.dispatch({ type : SET_CURRENT_PROBLEM, CURRENT_PROBLEM: probs.length });
-        }.bind(this);
               
         return (
         <div>
             <Problem value={probList[currProblem]}
                     id={currProblem}
                     buttonGroup={this.props.value[BUTTON_GROUP]}
+                    store={this.props.store}
+                    storeDispatch={this.props.storeDispatch}
+
+
+
             />
         </div>
       )

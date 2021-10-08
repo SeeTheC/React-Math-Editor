@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 var Khan = window.Khan;
 var MathJax = window.MathJax;
@@ -74,6 +73,12 @@ const srOnly = {
 };
 
 class TeX extends React.Component {
+    constructor () {
+        super();
+        this.mathjaxRef = React.createRef();
+        this.katexRef = React.createRef();
+        this.componetRef = React.createRef();
+    }
     static propTypes = {
         children: PropTypes.node,
         onClick: PropTypes.func,
@@ -95,9 +100,9 @@ class TeX extends React.Component {
     }
 
     componentDidMount() {
-        this._root = ReactDOM.findDOMNode(this);
-
-        if (this.refs.katex.childElementCount > 0) {
+        this._root = this.componetRef.current; //ReactDOM.findDOMNode(this);
+        const katexNode = this.katexRef.current;
+        if (katexNode.childElementCount > 0) {
             // If we already rendered katex in the render function, we don't
             // need to render anything here.
             this.props.onRender(this._root);
@@ -113,7 +118,8 @@ class TeX extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         // If we already rendered katex in the render function, we don't
         // need to render anything here.
-        if (this.refs.katex.childElementCount > 0) {
+        const katexNode = this.katexRef.current;
+        if (katexNode.childElementCount > 0) {
             if (this.script) {
                 // If we successfully rendered KaTeX, check if there's
                 // lingering MathJax from the last render, and if so remove it.
@@ -164,7 +170,9 @@ class TeX extends React.Component {
         if (!this.script) {
             this.script = document.createElement("script");
             this.script.type = "math/tex";
-            ReactDOM.findDOMNode(this.refs.mathjax).appendChild(this.script);
+            const node = this.mathjaxRef.current;
+            //ReactDOM.findDOMNode(this.refs.mathjax).appendChild(this.script);
+            node.appendChild(this.script);
         }
         if ("text" in this.script) {
             // IE8, etc
@@ -199,11 +207,11 @@ class TeX extends React.Component {
             }
         }
 
-        return <div onClick={this.props.onClick}>
+        return <div onClick={this.props.onClick} ref={this.componetRef}>
             <div style={{...this.props.style, display : "inline-block",padding: "3px"}}>
-            <span ref="mathjax" />
+            <span ref= {this.mathjaxRef} />
             <span
-                ref="katex"
+                ref={this.katexRef}
                 dangerouslySetInnerHTML={katexHtml}
                 aria-hidden={!!katexHtml && !!katexA11yHtml}
             />

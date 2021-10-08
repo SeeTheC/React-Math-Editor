@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import _ from 'underscore';
 import TeX from './TeX.js';
 import { symbolGroups } from './MathEditorHelpModal.js';
@@ -201,7 +200,7 @@ class MatrixSizePicker extends React.Component {
                                                 // yes this is dumb, but so is javascript, could be clearer
                                                 // with just polyfilling something but I don't feel like doing
                                                 // that right now
-                                                (row == 1 ? oneRow : new Array(row).join(oneRow + '\\\\')) +
+                                                (row === 1 ? oneRow : new Array(row).join(oneRow + '\\\\')) +
                                                 '\\end{' + this.state.endCaps + 'matrix}';
                                             input.write(latex);
                                         });
@@ -314,39 +313,39 @@ class TexButtons extends React.Component {
                         style={this.props.buttonGroup === BASIC ?
                                     { backgroundColor: "#052d66"} : {}}
                     onClick={function() {
-                                window.ephemeralStore.dispatch(
+                                this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : BASIC });                                                                                          
-                                }}/>
+                                }.bind(this)}/>
                 <Button text="Geometry"
                         style={this.props.buttonGroup === GEOMETRY ?
                                     { backgroundColor: "#052d66"} : {}}
                     onClick={function() {
-                                window.ephemeralStore.dispatch(
-                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : GEOMETRY});}}/>
+                                this.props.storeDispatch(
+                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : GEOMETRY});}.bind(this)}/>
                 <Button text="Set Theory and Logic"
                         style={this.props.buttonGroup === SET_THEORY ?
                                     { backgroundColor: "#052d66"} : {}}
                     onClick={function() {
-                                window.ephemeralStore.dispatch(
-                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : SET_THEORY });}}/>
+                                this.props.storeDispatch(
+                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : SET_THEORY });}.bind(this)}/>
                 <Button text="Matrix"
                         style={this.props.buttonGroup === MATRIX ?
                                     { backgroundColor: "#052d66"} : {}}
                     onClick={function() {
-                                window.ephemeralStore.dispatch(
-                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : MATRIX});}}/>
+                                 this.props.storeDispatch(
+                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : MATRIX});}.bind(this)}/>
                 <Button text="Calculus"
                         style={this.props.buttonGroup === CALC ?
                                     { backgroundColor: "#052d66"} : {}}
                     onClick={function() {
-                                window.ephemeralStore.dispatch(
-                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : CALC });}}/>
+                                this.props.storeDispatch(
+                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : CALC });}.bind(this)}/>
                 <Button text="Greek"
                         style={this.props.buttonGroup === GREEK ?
                                     { backgroundColor: "#052d66"} : {}}
                     onClick={function() {
-                                window.ephemeralStore.dispatch(
-                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : GREEK });}}/>
+                                 this.props.storeDispatch(
+                                    { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : GREEK });}.bind(this)}/>
             </div>
 
             <div>Move Cursor
@@ -419,6 +418,11 @@ class TexButtons extends React.Component {
 
 // A WYSIWYG math input that calls `onChange(LaTeX-string)`
 class MathInput extends React.Component {
+    constructor () {
+        super();
+        this.mathinputRef = React.createRef();
+        this.componetRef = React.createRef();
+    }
     static propTypes = {
         value: PropTypes.string,
         convertDotToTimes: PropTypes.bool,
@@ -458,13 +462,16 @@ class MathInput extends React.Component {
                 className="math-input-buttons absolute"
                 convertDotToTimes={this.props.convertDotToTimes}
                 onInsert={this.insert}
-                buttonGroup={this.props.buttonGroup} />;
+                buttonGroup={this.props.buttonGroup} 
+                store={this.props.store}
+                storeDispatch={this.props.storeDispatch}
+                />;
         }
 
-        return <div style={{display: 'inline-block'}}>
+        return <div style={{display: 'inline-block'}} ref={this.componetRef}>
             <div style={{...this.props.styles, display: 'inline-block'}}>
                 <span className={className}
-                      ref="mathinput"
+                      ref={this.mathinputRef}
                       style={{minWidth:'200px', padding:'5px', margin: '10px'}}
                       aria-label={this.props.labelText}
                       onFocus={this.handleFocus}
@@ -492,7 +499,7 @@ class MathInput extends React.Component {
     };
 
     handleMouseDown = (event) => {
-        var focused = ReactDOM.findDOMNode(this).contains(event.target);
+        var focused = this.componetRef.current.contains(event.target);
         this.mouseDown = focused;
         if (!focused) {
             this.setState({ focused: false });
@@ -542,7 +549,9 @@ class MathInput extends React.Component {
         // seeing that node for the first time, then returns the associated
         // MathQuill object for that node. It is stable - will always return
         // the same object when called on the same DOM node.
-        return MathQuill.MathField(ReactDOM.findDOMNode(this.refs.mathinput), options);
+        //return MathQuill.MathField(ReactDOM.findDOMNode(this.refs.mathinput), options);
+        const node = this.mathinputRef.current;
+        return MathQuill.MathField(node, options);
     };
 
     componentWillUnmount() {

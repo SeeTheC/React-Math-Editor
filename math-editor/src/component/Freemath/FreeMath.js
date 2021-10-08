@@ -1,11 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import Assignment from './Assignment.js';
 import { assignmentReducer } from './Assignment.js';
 // Application modes
 var APP_MODE = 'APP_MODE';
 var EDIT_ASSIGNMENT = 'EDIT_ASSIGNMENT';
-var MODE_CHOOSER = 'MODE_CHOOSER';
-
 
 // Actions to change modes
 var GO_TO_MODE_CHOOSER = 'GO_TO_MODE_CHOOSER';
@@ -29,79 +28,33 @@ var CURRENT_PROBLEM = 'CURRENT_PROBLEM';
 
 // TODO - make this more efficient, or better yet replace uses with the spread operator
 // to avoid unneeded object creation
-function cloneDeep(oldObject) {
+export function cloneDeep(oldObject) {
     return JSON.parse(JSON.stringify(oldObject));
 }
 
-function genID() {
+export function genID() {
     return Math.floor(Math.random() * 200000000);
-}
-
-/**
- * Using sparingly, most accesses of state should be passed down to
- * components through the render tree.
- *
- * This is only used currently in the save path to grab the most recent
- * root persistent state to save it externally somehwere (local filesystem, html5 localstorage, HTTP request).
- */
-function getPersistentState() {
-    return window.store.getState();
-}
-
-// TODO - fixme, separate this out from persistent state
-function getEphemeralState() {
-    return window.ephemeralStore.getState();
-}
-
-function getCompositeState() {
-    return {
-        ...getPersistentState(),
-        ...getEphemeralState()
-    }
 }
 
 /**
  * Filter out if we are currently grading files from google dirve, otherwise auto-save
  * to drive or browser local storage
  */
-function autoSave() {
+ export function autoSave() {
     //var appCompState = getCompositeState();    
     console.log("auto-save event");
 }
 
-function ephemeralStateReducer(state, action) {
-    if (state === undefined) {
-        return {
-            BUTTON_GROUP : 'BASIC',
-            PENDING_SAVES : 0
-        };
-    } else if (action.type === SET_CURRENT_PROBLEM) {
-        console.log("ephemeralStateReducer:" +SET_CURRENT_PROBLEM);
-        // Note: this is a little different for student view
-        // for students problems can safely be addressed by position in the list
-        // this allows new problems to be spawned with blank nubmers and fixed later
-        // here CURRENT_PROBLEM will refer to the string typed in by users
-        return {
-            ...state,
-            CURRENT_PROBLEM : action[CURRENT_PROBLEM]
-        };
-    } else if (action.type === SET_KEYBOARD_BUTTON_GROUP) {
-        console.log("ephemeralStateReducer:" +SET_KEYBOARD_BUTTON_GROUP);
-        return { ...state,
-                 BUTTON_GROUP : action[BUTTON_GROUP]
-        }
-    } else {
-        alert("ephemeralStateReducer Alert")
-        return state;
-    }
-}
 
-function rootReducer(state, action) {
+
+export function rootReducer(state, action) {
     console.log(action);
     console.log(state);
     if (state === undefined || action.type === GO_TO_MODE_CHOOSER) {
         return {
-            APP_MODE : MODE_CHOOSER,
+            ...assignmentReducer(),
+            "DOC_ID" : genID(),
+            APP_MODE : EDIT_ASSIGNMENT,
             BUTTON_GROUP : 'BASIC',
             PENDING_SAVES : 0        
         };
@@ -176,16 +129,26 @@ class FreeMath extends React.Component {
       if (this.props.value[APP_MODE] === EDIT_ASSIGNMENT) {        
           return (
               <div>                  
-                  <Assignment value={this.props.value}/>
+                  <Assignment value={this.props.value} store={this.props.value} storeDispatch={this.props.storeDispatch}/>
               </div>
           );
-      } 
-      else  {
-          alert(this.props.value);
-      }
-
+      }      
+      return(<div> 
+          FREE MATH;
+      </div>)
     }
 }
 
-export {FreeMath as default, autoSave, rootReducer, ephemeralStateReducer, cloneDeep, genID,
-    getPersistentState, getEphemeralState, getCompositeState};
+const mapStateToProps = (state) => {
+    return {
+        value:state
+    }
+}
+
+const mapDispactToProp = (dispatch) => {
+    return {
+        storeDispatch:dispatch
+    }
+}
+
+export default connect(mapStateToProps, mapDispactToProp)(FreeMath);

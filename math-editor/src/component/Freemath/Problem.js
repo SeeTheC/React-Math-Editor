@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../App.css';
 import MathInput from './MathInput.js';
-import { genID,  getCompositeState } from './FreeMath.js';
+import { genID } from './FreeMath.js';
 
 // index in list
 var STEP_KEY = 'STEP_KEY';
@@ -37,9 +37,6 @@ var SUCCESS = 'SUCCESS';
 var ERROR = 'ERROR';
 var HIGHLIGHT = 'HIGHLIGHT';
 var STEPS = 'STEPS';
-var SHOW_TUTORIAL = "SHOW_TUTORIAL";
-var SHOW_IMAGE_TUTORIAL = "SHOW_IMAGE_TUTORIAL";
-var SHOW_DRAWING_TUTORIAL = 'SHOW_DRAWING_TUTORIAL';
 
 var FORMAT = "FORMAT";
 var MATH = "MATH";
@@ -98,7 +95,7 @@ class Step extends React.Component {
     onBackspace = (evt) => {
         if (evt.key === 'Backspace') {
             if (this.props.step[CONTENT] === '') {
-                window.store.dispatch(
+               this.props.storeDispatch (
                     { type : DELETE_STEP, PROBLEM_INDEX : this.props.problemIndex,
                       STEP_KEY : this.props.stepIndex});
                 this.props.focusStep(Math.max(this.props.stepIndex - 1, 0));
@@ -138,12 +135,7 @@ class Step extends React.Component {
         const step = this.props.step;
         const stepIndex = this.props.stepIndex;
         // TODO - should be cleaner and not pass down the whole global state...
-        const value = this.props.value;
-        const probNumber = this.props.value[PROBLEM_NUMBER];
         const problemIndex = this.props.problemIndex;
-        const showTutorial = this.props.value[SHOW_TUTORIAL];
-        const showImgTutorial = this.props.value[SHOW_IMAGE_TUTORIAL];
-        const showDrawingTutorial = this.props.value[SHOW_DRAWING_TUTORIAL];
         const buttonGroup = this.props.buttonGroup;
         // callback passed in to allow requesting focus of another step in the problem
         const focusStepCallback = this.props.focusStep;
@@ -165,7 +157,7 @@ class Step extends React.Component {
                     onKeyDown={function(evt) {
                             if ((evt.ctrlKey || evt.metaKey) && evt.key === 'e') {
                                 const newStepType = 'TEXT';
-                                window.store.dispatch({
+                                this.props.storeDispatch({
                                     type : EDIT_STEP, PROBLEM_INDEX : problemIndex, FORMAT : newStepType, STEP_KEY : stepIndex,
                                     NEW_STEP_CONTENT : (newStepType === IMG || step[FORMAT] === IMG) ? '' : step[CONTENT]
                                 });
@@ -191,7 +183,8 @@ class Step extends React.Component {
                         problemIndex={problemIndex} value={step[CONTENT]}
                         onChange={
                             function(value) {
-                                window.store.dispatch({
+                                console.log(this.props)
+                                this.props.storeDispatch({
                                 type : EDIT_STEP,
                                 PROBLEM_INDEX : problemIndex,
                                 STEP_KEY : stepIndex,
@@ -199,12 +192,14 @@ class Step extends React.Component {
                                 NEW_STEP_CONTENT : value});
                         }.bind(this)}
                         onSubmit={function() {
-                            window.store.dispatch(
+                            this.props.storeDispatch(
                                 { type : NEW_STEP,
                                   STEP_KEY : stepIndex,
                                   PROBLEM_INDEX : problemIndex});
                             focusStepCallback(stepIndex + 1);
                         }}
+                        store={this.props.store}
+                        storeDispatch={this.props.storeDispatch}
                     />
                 </div>
             }
@@ -222,11 +217,7 @@ class Problem extends React.Component {
 
     render() {
         const value = this.props.value;
-        const probNumber = this.props.value[PROBLEM_NUMBER];
         const problemIndex = this.props.id;
-        const showTutorial = this.props.value[SHOW_TUTORIAL];
-        const showImgTutorial = this.props.value[SHOW_IMAGE_TUTORIAL];
-        const showDrawingTutorial= this.props.value[SHOW_DRAWING_TUTORIAL];
         const buttonGroup = this.props.buttonGroup;
         const steps = this.props.value[STEPS];
 
@@ -244,13 +235,16 @@ class Problem extends React.Component {
                                         ref={(ref) => this.stepRefs[stepIndex] = ref }
                                         focusStep={(stepIndex) => {
                                             setTimeout(() => {
-                                                const steps = getCompositeState()[PROBLEMS][problemIndex][STEPS];
+                                                const steps = this.props.store[PROBLEMS][problemIndex][STEPS];
                                                 if (stepIndex > steps.length - 1) stepIndex = steps.length - 1;
                                                 if (stepIndex < 0) stepIndex = 0;
                                                 this.stepRefs[stepIndex].focus()
                                             }, 50);
                                         }}
-                                        buttonGroup={buttonGroup} problemIndex={problemIndex}/>)
+                                        buttonGroup={buttonGroup} problemIndex={problemIndex}
+                                        store={this.props.store}
+                                        storeDispatch={this.props.storeDispatch}    
+                                    />)
                         }.bind(this))}
                     </div>
             
