@@ -147,10 +147,10 @@ class Step extends React.Component {
             styles = {backgroundColor : SOFT_RED};
         }
         return (
-        <div key={step[STEP_ID]} style={{width:"95%"}}>
+        <div key={step[STEP_ID]} style={{width:"100%"}}>
             
-            <div style={{display:"block"}}>
-        <div style={{"float":"left","display":"flex", flexDirection: "row", width: "98%", alignItems: "center"}}>
+            <div style={{display:"block", width:"100%"}}>
+        <div style={{"float":"left","display":"flex", flexDirection: "row", width: "100%", alignItems: "center"}}>
             {   
             <div
                     ref={this.parentDivRef}
@@ -168,6 +168,8 @@ class Step extends React.Component {
                             }
                         }.bind(this)
                     }
+
+                    style={{display: 'inline-block', width: '100%'}}
                 >
                     <MathInput
                         key={stepIndex} buttonsVisible='focused'
@@ -183,7 +185,6 @@ class Step extends React.Component {
                         problemIndex={problemIndex} value={step[CONTENT]}
                         onChange={
                             function(value) {
-                                console.log(this.props)
                                 this.props.storeDispatch({
                                 type : EDIT_STEP,
                                 PROBLEM_INDEX : problemIndex,
@@ -197,7 +198,7 @@ class Step extends React.Component {
                                   STEP_KEY : stepIndex,
                                   PROBLEM_INDEX : problemIndex});
                             focusStepCallback(stepIndex + 1);
-                        }}
+                        }.bind(this)}
                         store={this.props.store}
                         storeDispatch={this.props.storeDispatch}
                     />
@@ -225,9 +226,9 @@ class Problem extends React.Component {
             this.stepRefs = [];
         }
         return (
-            <div>
-            <div className="problem-container" style={{display:"inline-block", width:"98%", float:'none'}}>
-                    <div className="equation-list" style={{paddingBottom:"150px"}}>
+            <div style={{display: 'inline-block', width: '100%'}}>
+            <div className="problem-container" style={{display:"inline-block", width:"100%", float:'none'}}>
+                    <div className="equation-list" style={{paddingBottom:"10px"}}>
                         <br />
 
                         {steps.map(function(step, stepIndex) {

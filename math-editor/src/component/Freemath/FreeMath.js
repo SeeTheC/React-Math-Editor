@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 import Assignment from './Assignment.js';
 import { assignmentReducer } from './Assignment.js';
+import Switch from "react-switch";
 // Application modes
 var APP_MODE = 'APP_MODE';
 var EDIT_ASSIGNMENT = 'EDIT_ASSIGNMENT';
@@ -25,6 +26,8 @@ var SET_ASSIGNMENT_CONTENT = 'SET_ASSIGNMENT_CONTENT';
 var SET_CURRENT_PROBLEM = 'SET_CURRENT_PROBLEM';
 var CURRENT_PROBLEM = 'CURRENT_PROBLEM';
 
+// editor
+var TOGGLE_LATEX_EDITOR = 'TOGGLE_LATEX_EDITOR';
 
 // TODO - make this more efficient, or better yet replace uses with the spread operator
 // to avoid unneeded object creation
@@ -56,7 +59,8 @@ export function rootReducer(state, action) {
             "DOC_ID" : genID(),
             APP_MODE : EDIT_ASSIGNMENT,
             BUTTON_GROUP : 'BASIC',
-            PENDING_SAVES : 0        
+            PENDING_SAVES : 0,
+            LATEX_EDITOR_STATE: true        
         };
     }    
      /**** Symbol- ephemeralStateReducer - Start ***/
@@ -96,8 +100,13 @@ export function rootReducer(state, action) {
                  SHOW_TUTORIAL: true
         }
     } else if (action.type === SET_ASSIGNMENTS_TO_GRADE) {
-       return { ...state };
-    } else if (action.type === SET_ASSIGNMENT_CONTENT) {
+       return { ...state };       
+    }  else if (action.type === TOGGLE_LATEX_EDITOR) {
+        var latextEditorState = state.LATEX_EDITOR_STATE;
+        return { ...state,
+                LATEX_EDITOR_STATE : !state.LATEX_EDITOR_STATE }; 
+    } 
+    else if (action.type === SET_ASSIGNMENT_CONTENT) {
         // TODO - consider serializing DOC_ID and other future top level attributes into file
         // for now this prevents all opened docs from clobbering other suto-saves
         return {
@@ -125,11 +134,30 @@ class FreeMath extends React.Component {
       console.log("FREEMATH RENDER...");
       console.log(this.props);
       console.log("****************************************");         
-
+      const handToggleLatexEditor = (e) => {
+        this.props.storeDispatch({type : TOGGLE_LATEX_EDITOR});
+      };
       if (this.props.value[APP_MODE] === EDIT_ASSIGNMENT) {        
           return (
-              <div>                  
+              <div style={{display: 'inline-block', width: '100%'}} >                       
                   <Assignment value={this.props.value} store={this.props.value} storeDispatch={this.props.storeDispatch}/>
+                  <label htmlFor="material-switch">
+                    <Switch
+                        checked={this.props.value["LATEX_EDITOR_STATE"]}
+                        onChange={(e)=>handToggleLatexEditor(e)}
+                        onColor="#86d3ff"
+                        onHandleColor="#2693e6"
+                        handleDiameter={10}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                        activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                        height={15}
+                        width={38}
+                        className="react-switch"
+                        id="material-switch"
+                        />
+                </label>
               </div>
           );
       }      

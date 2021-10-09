@@ -311,38 +311,38 @@ class TexButtons extends React.Component {
             <div className="math-button-categories">
                 <Button text="Basic"
                         style={this.props.buttonGroup === BASIC ?
-                                    { backgroundColor: "#052d66"} : {}}
+                                    { backgroundColor: "#86d3ff"} : {}}
                     onClick={function() {
                                 this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : BASIC });                                                                                          
                                 }.bind(this)}/>
                 <Button text="Geometry"
                         style={this.props.buttonGroup === GEOMETRY ?
-                                    { backgroundColor: "#052d66"} : {}}
+                                    { backgroundColor: "#86d3ff"} : {}}
                     onClick={function() {
                                 this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : GEOMETRY});}.bind(this)}/>
                 <Button text="Set Theory and Logic"
                         style={this.props.buttonGroup === SET_THEORY ?
-                                    { backgroundColor: "#052d66"} : {}}
+                                    { backgroundColor: "#86d3ff"} : {}}
                     onClick={function() {
                                 this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : SET_THEORY });}.bind(this)}/>
                 <Button text="Matrix"
                         style={this.props.buttonGroup === MATRIX ?
-                                    { backgroundColor: "#052d66"} : {}}
+                                    { backgroundColor: "#86d3ff"} : {}}
                     onClick={function() {
                                  this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : MATRIX});}.bind(this)}/>
                 <Button text="Calculus"
                         style={this.props.buttonGroup === CALC ?
-                                    { backgroundColor: "#052d66"} : {}}
+                                    { backgroundColor: "#86d3ff"} : {}}
                     onClick={function() {
                                 this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : CALC });}.bind(this)}/>
                 <Button text="Greek"
                         style={this.props.buttonGroup === GREEK ?
-                                    { backgroundColor: "#052d66"} : {}}
+                                    { backgroundColor: "#86d3ff"} : {}}
                     onClick={function() {
                                  this.props.storeDispatch(
                                     { type : SET_KEYBOARD_BUTTON_GROUP, [BUTTON_GROUP] : GREEK });}.bind(this)}/>
@@ -468,11 +468,11 @@ class MathInput extends React.Component {
                 />;
         }
 
-        return <div style={{display: 'inline-block'}} ref={this.componetRef}>
-            <div style={{...this.props.styles, display: 'inline-block'}}>
+        return <div style={{display: 'inline-block', width: '100%'}} ref={this.componetRef}>
+            <div style={{...this.props.styles, width: '100%', display: 'inline-block'}}>
                 <span className={className}
                       ref={this.mathinputRef}
-                      style={{minWidth:'200px', padding:'5px', margin: '10px'}}
+                      style={{padding:'5px'}}
                       aria-label={this.props.labelText}
                       onFocus={this.handleFocus}
                       onBlur={this.handleBlur} />
@@ -527,7 +527,11 @@ class MathInput extends React.Component {
         } else if (this.props.buttonsVisible === 'never') {
             return false;
         } else {
-            return this.state.focused;
+            if(this.props.store["LATEX_EDITOR_STATE"] == undefined || this.props.store["LATEX_EDITOR_STATE"] ) {
+                return this.state.focused;
+            } else{
+                return false;
+            }
         }
     };
 

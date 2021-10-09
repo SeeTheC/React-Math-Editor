@@ -190,3 +190,12 @@ Copied from persus project
     }
   }
   
+  .equation-list {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .mq-editable-field {
+    min-width: 100%;
+    max-width: 100%;
+  }

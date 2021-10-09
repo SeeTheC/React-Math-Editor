@@ -54,7 +54,7 @@ function App() {
 
   if(state.enableEditor) {
     return ( 
-      <div className="App">
+      <div className="App" style={{width:'400px', margin:'50px', textAlign:'left'}}>
        <button  onClick={()=> handleOnClick(state)}> back </button>    
        <LatexEditor />        
       </div>
@@ -72,6 +72,7 @@ function App() {
                 2. Install underscore package: npm install underscore
                 3. npm install redux
                 4. npm install react-redux
+                5. npm install react-switch
               */
             }  
             <button  onClick={()=> handleOnClick(state)}> Math-Editor </button>

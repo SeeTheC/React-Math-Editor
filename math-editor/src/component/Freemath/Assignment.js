@@ -59,15 +59,12 @@ class Assignment extends React.Component {
         }
               
         return (
-        <div>
+        <div style={{display: 'inline-block', width: '100%'}} >
             <Problem value={probList[currProblem]}
                     id={currProblem}
                     buttonGroup={this.props.value[BUTTON_GROUP]}
                     store={this.props.store}
                     storeDispatch={this.props.storeDispatch}
-
-
-
             />
         </div>
       )
