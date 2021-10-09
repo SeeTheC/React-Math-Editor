@@ -12,10 +12,13 @@ class LatexEditor extends Component {
         this.store = createStore(rootReducer);
     }
 
-    render () {
+    render () {       
         return (
             <Provider store={this.store} >
-                <FreeMath />
+                <FreeMath 
+                defaultValue={this.props.value} 
+                handelOnChange={this.props.handelOnChange}
+                />
             </Provider>
         );
     }

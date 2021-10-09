@@ -92,7 +92,7 @@ class Step extends React.Component {
         this.setState({showMenu: false});
     }
 
-    onBackspace = (evt) => {
+    onBackspace = (evt) => {       
         if (evt.key === 'Backspace') {
             if (this.props.step[CONTENT] === '') {
                this.props.storeDispatch (
@@ -115,7 +115,7 @@ class Step extends React.Component {
       }, 0);
       if (this.parentDivRef && this.parentDivRef.current) {
         this.parentDivRef.current.removeEventListener('keydown', this.onBackspace);
-        this.parentDivRef.current.addEventListener('keydown', this.onBackspace, true);
+        this.parentDivRef.current.addEventListener('keydown', this.onBackspace, true);                      
       }
     }
 
@@ -182,6 +182,7 @@ class Step extends React.Component {
                         ref={ (ref) => this.stepRef = ref }
                         upOutOf={ () => focusStepCallback(stepIndex - 1)}
                         downOutOf={ () => focusStepCallback(stepIndex + 1)}
+                        moveOutOf={(stepCount) => focusStepCallback(stepIndex + stepCount)}
                         problemIndex={problemIndex} value={step[CONTENT]}
                         onChange={
                             function(value) {
@@ -193,14 +194,17 @@ class Step extends React.Component {
                                 NEW_STEP_CONTENT : value});
                         }.bind(this)}
                         onSubmit={function() {
+                            
                             this.props.storeDispatch(
-                                { type : NEW_STEP,
+                                { type : NEW_BLANK_STEP,
                                   STEP_KEY : stepIndex,
                                   PROBLEM_INDEX : problemIndex});
                             focusStepCallback(stepIndex + 1);
+                        
                         }.bind(this)}
                         store={this.props.store}
                         storeDispatch={this.props.storeDispatch}
+                        stepClassName={this.props.stepClassName}
                     />
                 </div>
             }
@@ -232,6 +236,17 @@ class Problem extends React.Component {
                         <br />
 
                         {steps.map(function(step, stepIndex) {
+                            var stepsCount = steps.length-1;
+                            var stepClassName = undefined;
+                            if(stepIndex === 0 &&  stepIndex !== stepsCount) {
+                                stepClassName = "latex-step-top";                                
+                            } else if (stepIndex !== 0 &&  stepIndex !== stepsCount) {
+                                stepClassName = "latex-step-middle";                                
+                            }
+                            else if (stepIndex !== 0 &&  stepIndex === stepsCount)  {
+                                stepClassName = "latex-step-bottom";
+                            }
+
                             return (<Step key={problemIndex + ' ' + stepIndex} step={step} stepIndex={stepIndex} value={value}
                                         ref={(ref) => this.stepRefs[stepIndex] = ref }
                                         focusStep={(stepIndex) => {
@@ -245,6 +260,7 @@ class Problem extends React.Component {
                                         buttonGroup={buttonGroup} problemIndex={problemIndex}
                                         store={this.props.store}
                                         storeDispatch={this.props.storeDispatch}    
+                                        stepClassName={stepClassName}
                                     />)
                         }.bind(this))}
                     </div>

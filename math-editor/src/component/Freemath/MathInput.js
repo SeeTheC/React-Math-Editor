@@ -435,7 +435,8 @@ class MathInput extends React.Component {
         styles: PropTypes.object,
         buttonGroup: PropTypes.string,
         upOutOf: PropTypes.func,
-        downOutOf: PropTypes.func
+        downOutOf: PropTypes.func,
+        moveOutOf: PropTypes.func,
     };
 
     static defaultProps = {
@@ -454,7 +455,9 @@ class MathInput extends React.Component {
         if (this.props.className) {
             className = className + " " + this.props.className;
         }
-
+        if(this.props.stepClassName) {
+            className = className + " " + this.props.stepClassName;
+        }
         var buttons = null;
         if (this._shouldShowButtons()) {
             buttons = <TexButtons
@@ -527,7 +530,7 @@ class MathInput extends React.Component {
         } else if (this.props.buttonsVisible === 'never') {
             return false;
         } else {
-            if(this.props.store["LATEX_EDITOR_STATE"] == undefined || this.props.store["LATEX_EDITOR_STATE"] ) {
+            if(this.props.store["LATEX_EDITOR_STATE"] === undefined || this.props.store["LATEX_EDITOR_STATE"] ) {
                 return this.state.focused;
             } else{
                 return false;
@@ -535,7 +538,7 @@ class MathInput extends React.Component {
         }
     };
 
-    insert = (value) => {
+    insert = (value) => {      
         var input = this.mathField();
         if (_(value).isFunction()) {
             value(input);
@@ -657,6 +660,11 @@ class MathInput extends React.Component {
                     //console.log("Up");
                     //mathField.typedText("^");
                     this.props.downOutOf();
+                },
+                moveOutOf:(direction, mathField) => {
+                    // When the cursor is at the right edge, pressing the Right 
+                    // key causes the moveOutOf handler to be called with MQ.R
+                    this.props.moveOutOf(direction);
                 }
             }
         });

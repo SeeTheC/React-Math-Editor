@@ -129,7 +129,7 @@ Copied from persus project
     }
   
     .equation-list {
-        max-width:95%
+        max-width:99%
     }
   
     .mathStepEditor {
@@ -198,4 +198,21 @@ Copied from persus project
   .mq-editable-field {
     min-width: 100%;
     max-width: 100%;
+  }
+
+  .latex-step-top {
+    border-bottom-color: #dfd0d0;    
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+  }
+  
+  .latex-step-middle {
+    border-bottom-color: #dfd0d0;
+    border-top: none
+  }
+
+  .latex-step-bottom {    
+    border-top: none;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
   }
